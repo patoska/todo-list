@@ -1,0 +1,48 @@
+services:
+  db:
+    image: mysql:8.4.3
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: saludtech_development
+      MYSQL_USER: saludtech
+      MYSQL_PASSWORD: password
+    platform: linux/amd64
+    ports:
+      - 3306:3306
+    volumes:
+      - ./storage:/var/lib/mysql
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+  saludtech_backend: 
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.dev
+    command: /bin/sh -c "script/run-dev"
+    volumes: 
+      - ./backend:/rails
+    ports: 
+      - 3000:3000
+    depends_on:
+      - db
+    links:
+      - db
+    tty: true
+    environment:
+      RAILS_ENV: development
+      DB_USER: saludtech
+      DB_NAME: saludtech
+      DB_PASSWORD: password
+      DB_HOST: db
+      FRONTEND_URL: http://localhost:5173
+  saludtech_frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.dev
+    command: yarn dev --host
+    volumes:
+      - ./frontend:/app
+    ports:
+      - 5173:5173
+    environment:
+      - VITE_API_ENDPONT=http://localhost:3000
+    depends_on:
+      - saludtech_backend

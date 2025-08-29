@@ -1,0 +1,19 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  title: MyString
+  due_on: 2025-08-28 15:45:12
+  notify: one
+  notes: MyString
+  added_by: one
+  assigned_to: one
+  date_completed: 2025-08-28 15:45:12
+
+two:
+  title: MyString
+  due_on: 2025-08-28 15:45:12
+  notify: two
+  notes: MyString
+  added_by: two
+  assigned_to: two
+  date_completed: 2025-08-28 15:45:12
