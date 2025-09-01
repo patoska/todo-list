@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { toDosStore, type ToDo } from '../../store/to_dos'
 import { usersStore } from '../../store/users'
@@ -8,15 +8,12 @@ const store = toDosStore()
 const users = usersStore()
 const route = useRoute();
 const router = useRouter()
-let not_found = false
-let loading = true
 let to_do:any
 let id:number
 
 if (route.params !== undefined && "id" in route.params) {
   id = parseInt(route.params.id + "");
   to_do = await store.fetchToDo(id)
-  not_found = to_do.status == 404
 }
 users.fetchUsers()
 
@@ -49,6 +46,22 @@ async function submitForm() {
   }
   router.push('/to_dos')
 }
+
+const formattedDate = computed({
+  get() {
+    if (form.value && form.value.due_on) {
+      return form.value.due_on.slice(0, 10);
+    }
+    return '';
+  },
+  set(newValue) {
+    if (newValue) {
+      form.value.due_on = `${newValue}T00:00:00.000Z`;
+    } else {
+      form.value.due_on = "";
+    }
+  }
+});
 </script>
 
 <template>
@@ -69,7 +82,7 @@ async function submitForm() {
       </div>
       <div class="flex flex-row">
         <div class="p-5 font-bold w-[15vw]  min-w-[15vw]  max-w-[15vw]">Plazo</div>
-        <input v-model="form.due_on" class="p-5 flex-grow-2" />
+        <input v-model="formattedDate" class="p-5 flex-grow-2" type="date" />
       </div>
       <div class="flex flex-row">
         <div class="p-5 font-bold w-[15vw]  min-w-[15vw]  max-w-[15vw]">Notificar a</div>

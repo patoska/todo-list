@@ -74,6 +74,7 @@ export const toDosStore = defineStore('to_dos', {
     },
 
     async updateToDo(to_do: ToDo) {
+      to_do.due_on = new Date(to_do.due_on).toISOString()
       const res = await fetch(`${import.meta.env.VITE_API_ENDPONT}/to_dos/${to_do.id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },

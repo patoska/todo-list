@@ -31,6 +31,7 @@ class ToDosController < ApplicationController
     else
       to_do_params[:date_completed] = DateTime.iso8601(to_do_params[:date_completed])
     end
+    to_do_params[:due_on] = DateTime.iso8601(to_do_params[:due_on]) unless to_do_params[:due_on].blank?
     if @to_do.update(to_do_params)
       render json: { status: :ok, to_do: @to_do }
     else
