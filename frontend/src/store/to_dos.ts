@@ -9,6 +9,7 @@ export interface ToDo {
   added_by_id: string
   assigned_to_id: string
   date_completed?: string
+  estimate?: string
 }
 
 export const toDosStore = defineStore('to_dos', {
@@ -37,7 +38,7 @@ export const toDosStore = defineStore('to_dos', {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(to_do),
       })
-      const newToDo = await res.json()
+      const newToDo:any = await res.json()
       this.to_dos.push(newToDo)
     },
 
@@ -59,7 +60,7 @@ export const toDosStore = defineStore('to_dos', {
       }
     },
 
-    async updateToDo(to_do: ToDo) {
+    markAsCompleted(to_do: ToDo){
       if (to_do.date_completed == "" ||
           to_do.date_completed === undefined ||
           to_do.date_completed === null ) {
@@ -69,7 +70,10 @@ export const toDosStore = defineStore('to_dos', {
       else {
         to_do.date_completed = ""
       }
+      this.updateToDo(to_do)
+    },
 
+    async updateToDo(to_do: ToDo) {
       const res = await fetch(`${import.meta.env.VITE_API_ENDPONT}/to_dos/${to_do.id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },

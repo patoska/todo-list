@@ -16,6 +16,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_28_154512) do
     t.datetime "due_on"
     t.bigint "notify_id", null: false
     t.string "notes"
+    t.string "estimate"
     t.bigint "added_by_id", null: false
     t.bigint "assigned_to_id", null: false
     t.datetime "date_completed"

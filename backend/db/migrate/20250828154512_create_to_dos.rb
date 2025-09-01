@@ -5,6 +5,7 @@ class CreateToDos < ActiveRecord::Migration[8.0]
       t.datetime :due_on
       t.references :notify, index: true, null: false, foreign_key: {to_table: :users}
       t.string :notes
+      t.string :estimate
       t.references :added_by, index: true, null: false, foreign_key: {to_table: :users}
       t.references :assigned_to, index: true, null: false, foreign_key: {to_table: :users}
       t.datetime :date_completed

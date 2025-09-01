@@ -1,13 +1,12 @@
 <script setup lang="ts">
-import ToDo  from './ToDo.vue';
-
+import ToDoForm from './ToDoForm.vue'
 </script>
 
 <template>
   <div>
     <suspense>
       <template #default>
-        <ToDo />
+        <ToDoForm />
       </template>
       <template #fallback>
         Loading...

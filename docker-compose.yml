@@ -23,8 +23,10 @@ services:
       - 3000:3000
     depends_on:
       - db
+      - ollama
     links:
       - db
+      - ollama
     tty: true
     environment:
       RAILS_ENV: development
@@ -33,6 +35,7 @@ services:
       DB_PASSWORD: password
       DB_HOST: db
       FRONTEND_URL: http://localhost:5173
+      LLM_URL: http://ollama:11434
   saludtech_frontend:
     build:
       context: ./frontend
@@ -44,5 +47,11 @@ services:
       - 5173:5173
     environment:
       - VITE_API_ENDPONT=http://localhost:3000
-    depends_on:
-      - saludtech_backend
+  ollama:
+    image: ollama/ollama:latest
+    ports:
+      - 11434:11434
+    volumes:
+      - ollama_data:/root/.ollama
+volumes:
+  ollama_data:
